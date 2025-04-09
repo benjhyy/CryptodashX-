@@ -1,72 +1,104 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to bottom right, #ffbfd4, #ffe3f0);
-  color: #333;
-  line-height: 1.6;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9fbff;
+  color: #1b2a41;
+}
+
+a {
+  text-decoration: none;
+  color: #1b4edc;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 header {
-  background-color: #ff4fa1;
+  background-color: white;
+  padding: 1.5rem 0;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav h1 {
+  font-size: 1.8rem;
+  color: #1b4edc;
+}
+
+.nav a {
+  margin-left: 1rem;
+  font-weight: 500;
+}
+
+.nav .btn {
+  background-color: #1b4edc;
   color: white;
-  padding: 2rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+}
+
+.hero {
+  background-color: #eaf1ff;
+  padding: 4rem 0;
   text-align: center;
-  border-bottom: 4px solid #fff;
 }
 
-header h1 {
-  margin: 0;
+.hero h2 {
   font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
-header p {
-  font-size: 1.2rem;
-}
-
-section {
-  padding: 2rem;
-  max-width: 900px;
-  margin: auto;
-}
-
-.features ul {
-  list-style: none;
-  padding: 0;
-}
-
-.features li {
-  background: white;
-  border-left: 5px solid #ff4fa1;
-  padding: 1rem;
-  margin: 1rem 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.dashboard a {
-  background-color: #ff4fa1;
+.cta-btn {
+  background-color: #1b4edc;
   color: white;
-  padding: 0.7rem 1.5rem;
-  margin-right: 1rem;
-  text-decoration: none;
-  border-radius: 5px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
   display: inline-block;
+  margin-top: 1rem;
 }
 
-.dashboard a:hover {
-  background-color: #e54390;
+.chart-placeholder {
+  padding: 3rem 0;
 }
 
-.charts iframe {
-  border-radius: 10px;
-  border: 2px solid #ff4fa1;
+.chart-box {
+  background-color: white;
+  border: 1px solid #ccd6f6;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  color: #888;
+}
+
+.features {
+  background-color: #f0f4ff;
+  padding: 3rem 0;
+}
+
+.grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.feature {
+  flex: 1 1 30%;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
 footer {
-  background-color: #ff4fa1;
-  color: white;
   text-align: center;
-  padding: 1rem;
-  position: relative;
-  bottom: 0;
-  width: 100%;
+  padding: 2rem 0;
+  background-color: #eaf1ff;
 }
