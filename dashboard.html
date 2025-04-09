@@ -1,82 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Client Dashboard - CryptodashX</title>
+  <title>CryptodashX | Dashboard</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="firebase.js"></script>
 </head>
-<body>
-
-  <header style="text-align:center;padding:2rem;">
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-      <img src="https://i.ibb.co/6rzvjM2/cryptodashx-logo.png" alt="CryptodashX Logo" width="50" height="50" />
-      <h1 style="margin:0;font-size:2rem;color:#333;">CryptodashX</h1>
+<body class="dashboard">
+  <header>
+    <div class="logo">CryptodashX</div>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Withdraw</a></li>
+        <li><a href="#">Deposit</a></li>
+        <li><a href="#" id="logoutBtn">Logout</a></li>
+      </ul>
+    </nav>
+  </header>  <section class="dashboard-welcome">
+    <h2>Welcome, <span id="username">Trader</span>!</h2>
+    <p>Your financial journey starts here.</p>
+  </section>  <section class="account-info">
+    <div class="balance-card">
+      <h3>Account Balance</h3>
+      <p id="balance">$0.00</p>
     </div>
-    <p style="color:#777;font-size:1rem;">Client Dashboard</p>
-  </header>
-
-  <section style="max-width:600px;margin:2rem auto;">
-    <div style="background:white;padding:1.5rem;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);">
-      <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
-      <p><strong>Email:</strong> <span id="user-email">...</span></p>
-      <p><strong>Balance:</strong> $<span id="user-balance">...</span></p>
-      <p><strong>Assigned Trader:</strong> <span id="user-trader">...</span></p>
-      <button onclick="logout()" style="margin-top:1rem;background:#ff4fa1;color:#fff;border:none;padding:10px 20px;border-radius:6px;">Logout</button>
+    <div class="trader-card">
+      <h3>Assigned Trader</h3>
+      <p id="assignedTrader">John FX</p>
     </div>
-  </section>
+  </section>  <section class="chart-section">
+    <h3>Profit History</h3>
+    <canvas id="profitChart" width="400" height="150"></canvas>
+  </section>  <section class="actions">
+    <button onclick="location.href='deposit.html'">Deposit</button>
+    <button onclick="location.href='withdraw.html'">Withdraw</button>
+  </section>  <script>
+    // Dummy data until Firebase connects
+    document.getElementById("username").textContent = "Fatima";
+    document.getElementById("balance").textContent = "$12,450.00";
 
-  <footer>
-    <p>&copy; 2025 CryptodashX. All rights reserved.</p>
-  </footer>
-
-  <!-- Firebase SDK v8 -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-  <script>
-    // Firebase config
-    var firebaseConfig = {
-      apiKey: "AIzaSyCci7LzkpUEt2-eRPJqOUmS7CengwEVpZY",
-      authDomain: "cryptodashx.firebaseapp.com",
-      projectId: "cryptodashx",
-      storageBucket: "cryptodashx.firebasestorage.app",
-      messagingSenderId: "106873532709",
-      appId: "1:106873532709:web:4a9e8ee575a7f5f7c92acc",
-      measurementId: "G-F56GBVEVPS"
-    };
-    firebase.initializeApp(firebaseConfig);
-    var auth = firebase.auth();
-    var db = firebase.firestore();
-
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        window.location.href = "login.html";
-      } else {
-        const email = user.email;
-        document.getElementById("user-email").textContent = email;
-
-        db.collection("clients").doc(email).get().then(doc => {
-          if (doc.exists) {
-            const data = doc.data();
-            document.getElementById("user-name").textContent = data.name || "Client";
-            document.getElementById("user-balance").textContent = data.balance || "0";
-            document.getElementById("user-trader").textContent = data.trader || "Pending";
-          } else {
-            document.getElementById("user-name").textContent = "New User";
-            document.getElementById("user-balance").textContent = "0";
-            document.getElementById("user-trader").textContent = "Unassigned";
-          }
-        });
+    const ctx = document.getElementById("profitChart").getContext("2d");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+        datasets: [{
+          label: "Profits ($)",
+          data: [400, 1200, 950, 1700, 2150],
+          borderColor: "#00ffb3",
+          tension: 0.4,
+          fill: false,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+        },
       }
     });
-
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
-      });
-    }
-  </script>
-</body>
+  </script></body>
 </html>
