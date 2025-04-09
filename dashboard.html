@@ -1,62 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CryptodashX | Dashboard</title>
+  <title>CryptodashX | Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
-<body class="dashboard">
-
+<body>
   <header>
-    <h1 class="logo">CryptodashX</h1>
+    <h1 class="logo">Admin Panel - CryptodashX</h1>
     <nav>
       <a href="index.html">Home</a>
-      <a href="deposit.html">Deposit</a>
-      <a href="withdraw.html">Withdraw</a>
       <a href="#" id="logoutBtn">Logout</a>
     </nav>
-  </header>
-
-  <section class="dashboard-welcome">
-    <h2>Welcome, <span id="username">Trader</span>!</h2>
-    <p>Your secure crypto dashboard.</p>
-  </section>
-
-  <section class="account-info">
-    <div class="card"><h3>Account Balance</h3><p id="balance">$0.00</p></div>
-    <div class="card"><h3>Assigned Trader</h3><p id="assignedTrader">Loading...</p></div>
-    <div class="card"><h3>Email</h3><p id="email">Loading...</p></div>
-  </section>
-
-  <section class="chart-section">
-    <h3>Profit Trend</h3>
-    <canvas id="profitChart"></canvas>
-  </section>
-
-  <section class="transactions">
-    <h3>Recent Transactions</h3>
+  </header>  <section class="container">
+    <h2>All Users</h2>
     <table>
       <thead>
         <tr>
-          <th>Date</th>
-          <th>Type</th>
-          <th>Amount</th>
-          <th>Status</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Balance</th>
+          <th>Trader</th>
+          <th>Actions</th>
         </tr>
       </thead>
-      <tbody id="transactions-body">
-        <tr><td colspan="4">Loading...</td></tr>
+      <tbody id="userTable">
+        <tr><td colspan="5">Loading...</td></tr>
       </tbody>
     </table>
-  </section>
-
-  <script>
+  </section>  <script>
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -69,51 +45,52 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    auth.onAuthStateChanged(async user => {
-      if (!user) return window.location.href = "index.html";
-
-      const userDoc = await db.collection("users").doc(user.uid).get();
-      const data = userDoc.data();
-
-      document.getElementById("username").textContent = data?.name || "Trader";
-      document.getElementById("balance").textContent = `$${data?.balance || "0.00"}`;
-      document.getElementById("assignedTrader").textContent = data?.trader || "Unassigned";
-      document.getElementById("email").textContent = user.email;
-
-      const tbody = document.getElementById("transactions-body");
-      tbody.innerHTML = "";
-      (data?.transactions || []).forEach(tx => {
-        tbody.innerHTML += `<tr>
-          <td>${tx.date}</td>
-          <td>${tx.type}</td>
-          <td>$${tx.amount}</td>
-          <td>${tx.status}</td>
-        </tr>`;
-      });
-    });
-
-    document.getElementById("logoutBtn").addEventListener("click", () => auth.signOut());
-
-    const chart = new Chart(document.getElementById("profitChart"), {
-      type: "line",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-        datasets: [{
-          label: "Profits",
-          data: [500, 1000, 750, 1200, 2000],
-          borderColor: "#00c896",
-          backgroundColor: "rgba(0,200,150,0.1)",
-          tension: 0.4,
-          fill: true
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false }
-        }
+    auth.onAuthStateChanged(user => {
+      if (!user || user.email !== "admin@cryptodashx.com") {
+        alert("Access denied.");
+        window.location.href = "index.html";
+      } else {
+        loadUsers();
       }
     });
-  </script>
-</body>
+
+    async function loadUsers() {
+      const snapshot = await db.collection("users").get();
+      const tbody = document.getElementById("userTable");
+      tbody.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const user = doc.data();
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${user.name || "-"}</td>
+          <td>${user.email}</td>
+          <td>
+            <input type="number" value="${user.balance || 0}" id="bal-${doc.id}" style="width: 80px;"> $
+          </td>
+          <td>
+            <input type="text" value="${user.trader || "Unassigned"}" id="trader-${doc.id}" style="width: 120px;">
+          </td>
+          <td>
+            <button onclick="updateUser('${doc.id}')">Update</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function updateUser(uid) {
+      const balance = parseFloat(document.getElementById(`bal-${uid}`).value);
+      const trader = document.getElementById(`trader-${uid}`).value;
+
+      await db.collection("users").doc(uid).update({
+        balance: balance,
+        trader: trader
+      });
+
+      alert("User updated successfully.");
+    }
+
+    document.getElementById("logoutBtn").onclick = () => auth.signOut();
+  </script></body>
 </html>
