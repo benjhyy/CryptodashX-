@@ -15,7 +15,7 @@
 
   <!-- Header -->
   <header>
-    <h1>CryptodashX</h1>
+    <img src="https://i.ibb.co/6rzvjM2/cryptodashx-logo.png" alt="CryptodashX Logo" style="height: 40px;" />
     <nav>
       <a href="#" onclick="logout()">Logout</a>
     </nav>
@@ -39,10 +39,42 @@
     <p id="auth-status"></p>
   </section>
 
-  <!-- Crypto Stats Section -->
+  <!-- Ticker Market -->
   <section class="container">
-    <h3 class="center">Top Crypto Markets</h3>
-    <div id="crypto-data" class="crypto-cards"></div>
+    <h3 class="center">Live Market Ticker</h3>
+    <div class="ticker-container">
+      <div id="ticker" class="ticker"></div>
+    </div>
+  </section>
+
+  <!-- TradingView Chart -->
+  <section class="container">
+    <h3 class="center">Live Trading Chart</h3>
+    <div class="chart-box">
+      <iframe src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=BINANCE:BTCUSDT&interval=1&hidesidetoolbar=1&theme=light" style="width: 100%; height: 400px;" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+    </div>
+  </section>
+
+  <!-- Platform Story -->
+  <section class="container">
+    <h3 class="center">Why CryptodashX?</h3>
+    <p style="max-width: 800px; margin: auto; text-align: center;">
+      CryptodashX was built to make passive crypto investing accessible for everyone.
+      With expert traders, smart algorithmic signals, and secure wallets, we handle
+      the heavy lifting while you watch your portfolio grow. Whether you're a beginner
+      or a seasoned investor, we've helped hundreds of users earn steady profits without stress.
+    </p>
+
+    <div class="testimonials">
+      <div class="testimonial-card">
+        <p>“I started with $100 and now earn weekly from crypto trades — all hands-free!”</p>
+        <strong>– Fatima, Nigeria</strong>
+      </div>
+      <div class="testimonial-card">
+        <p>“Best crypto platform for passive income. Transparent and trustworthy.”</p>
+        <strong>– David, UK</strong>
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->
@@ -54,7 +86,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
-  <!-- Init Firebase -->
+  <!-- Firebase Init -->
   <script>
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
@@ -71,30 +103,20 @@
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          document.getElementById("auth-status").innerText = "Logged in!";
-        })
-        .catch(err => {
-          document.getElementById("auth-status").innerText = err.message;
-        });
+        .then(() => document.getElementById("auth-status").innerText = "Logged in!")
+        .catch(err => document.getElementById("auth-status").innerText = err.message);
     }
 
     function signUp() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          document.getElementById("auth-status").innerText = "Account created!";
-        })
-        .catch(err => {
-          document.getElementById("auth-status").innerText = err.message;
-        });
+        .then(() => document.getElementById("auth-status").innerText = "Account created!")
+        .catch(err => document.getElementById("auth-status").innerText = err.message);
     }
 
     function logout() {
-      auth.signOut().then(() => {
-        document.getElementById("auth-status").innerText = "Logged out.";
-      });
+      auth.signOut().then(() => document.getElementById("auth-status").innerText = "Logged out.");
     }
   </script>
 
@@ -112,7 +134,7 @@
     });
   </script>
 
-  <!-- Crypto Stats Script -->
+  <!-- Ticker Script -->
   <script>
     async function getCryptoData() {
       try {
@@ -120,18 +142,13 @@
           'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,binancecoin,solana,cardano'
         );
         const data = await res.json();
-        const container = document.getElementById('crypto-data');
+        const ticker = document.getElementById('ticker');
 
         data.forEach(coin => {
-          const card = document.createElement('div');
-          card.className = 'crypto-card';
-          card.innerHTML = `
-            <h4>${coin.name} (${coin.symbol.toUpperCase()})</h4>
-            <p><strong>Price:</strong> $${coin.current_price.toLocaleString()}</p>
-            <p><strong>24h Change:</strong> ${coin.price_change_percentage_24h.toFixed(2)}%</p>
-            <p><strong>Market Cap:</strong> $${(coin.market_cap / 1e9).toFixed(2)}B</p>
-          `;
-          container.appendChild(card);
+          const span = document.createElement('span');
+          span.style.marginRight = "3rem";
+          span.textContent = `${coin.name}: $${coin.current_price.toLocaleString()} (${coin.price_change_percentage_24h.toFixed(2)}%)`;
+          ticker.appendChild(span);
         });
       } catch (err) {
         console.error('Failed to load crypto data:', err);
