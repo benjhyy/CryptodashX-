@@ -5,146 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CryptodashX</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background-color: #f4f7fa;
-      color: #111;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      top: 0;
-      left: 0;
-    }
-
-    header {
-      background: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    header h1 {
-      color: #1b4edc;
-    }
-
-    nav a {
-      margin-left: 1rem;
-      text-decoration: none;
-      color: #1b4edc;
-      font-weight: 600;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 5rem 2rem 3rem;
-      background: #eaf0fc;
-    }
-
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: #0b0f19;
-    }
-
-    .hero p {
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: auto;
-      color: #555;
-    }
-
-    .hero button {
-      margin-top: 2rem;
-      background: #1b4edc;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .hero button:hover {
-      background: #153bb2;
-    }
-
-    .container {
-      padding: 3rem 2rem;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .crypto-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: center;
-    }
-
-    .crypto-card {
-      background: white;
-      padding: 1rem 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      width: 220px;
-      transition: transform 0.3s ease;
-    }
-
-    .crypto-card:hover {
-      transform: scale(1.05);
-    }
-
-    .crypto-card h4 {
-      margin-bottom: 0.5rem;
-      color: #1b4edc;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      background: #f2f2f2;
-    }
-
-    @media (max-width: 768px) {
-      .hero h2 {
-        font-size: 2rem;
-      }
-
-      .crypto-cards {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-  </style>
 </head>
 <body>
-  <!-- Background animation -->
+
+  <!-- Animated Background -->
   <div id="particles-js"></div>
 
   <!-- Header -->
   <header>
     <h1>CryptodashX</h1>
     <nav>
-      <a href="#">Login</a>
-      <a href="#">Get Started</a>
+      <a href="#" onclick="logout()">Logout</a>
     </nav>
   </header>
 
@@ -152,12 +25,23 @@
   <section class="hero">
     <h2>Invest in the Future of Finance</h2>
     <p>We trade binary options and crypto on your behalf, earning profits while you relax.</p>
-    <button>Create Account</button>
+  </section>
+
+  <!-- Auth Section -->
+  <section class="container auth">
+    <h3>User Login</h3>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <div class="btns">
+      <button onclick="login()">Login</button>
+      <button onclick="signUp()">Sign Up</button>
+    </div>
+    <p id="auth-status"></p>
   </section>
 
   <!-- Crypto Stats Section -->
   <section class="container">
-    <h3 style="text-align:center; color:#1b4edc;">Top Crypto Markets</h3>
+    <h3 class="center">Top Crypto Markets</h3>
     <div id="crypto-data" class="crypto-cards"></div>
   </section>
 
@@ -166,7 +50,55 @@
     &copy; 2025 CryptodashX. All rights reserved.
   </footer>
 
-  <!-- Particle config -->
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <!-- Init Firebase -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          document.getElementById("auth-status").innerText = "Logged in!";
+        })
+        .catch(err => {
+          document.getElementById("auth-status").innerText = err.message;
+        });
+    }
+
+    function signUp() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          document.getElementById("auth-status").innerText = "Account created!";
+        })
+        .catch(err => {
+          document.getElementById("auth-status").innerText = err.message;
+        });
+    }
+
+    function logout() {
+      auth.signOut().then(() => {
+        document.getElementById("auth-status").innerText = "Logged out.";
+      });
+    }
+  </script>
+
+  <!-- Particle Config -->
   <script>
     particlesJS("particles-js", {
       particles: {
