@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - CryptodashX</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+    <p>Manage clients and update accounts</p>
+  </header>
+
+  <main style="padding: 2rem; max-width: 1000px; margin: auto;">
+    <div id="client-list">Loading clients...</div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CryptodashX. All rights reserved.</p>
+  </footer>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCci7LzkpUEt2-eRPJqOUmS7CengwEVpZY",
+      authDomain: "cryptodashx.firebaseapp.com",
+      projectId: "cryptodashx",
+      storageBucket: "cryptodashx.firebasestorage.app",
+      messagingSenderId: "106873532709",
+      appId: "1:106873532709:web:4a9e8ee575a7f5f7c92acc",
+      measurementId: "G-F56GBVEVPS"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.firestore();
+
+    function loadClients() {
+      const container = document.getElementById("client-list");
+      db.collection("clients").get().then(snapshot => {
+        container.innerHTML = "";
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          container.innerHTML += `
+            <div style="border:1px solid #ccc;padding:1rem;margin-bottom:1rem;">
+              <h3>${data.name || doc.id}</h3>
+              <p><strong>Email:</strong> ${data.email}</p>
+              <p><strong>Balance:</strong> $<input id="bal-${doc.id}" value="${data.balance || 0}" /></p>
+              <p><strong>Trader:</strong> <input id="trader-${doc.id}" value="${data.trader || 'Unassigned'}" /></p>
+              <button onclick="updateClient('${doc.id}')">Update</button>
+            </div>
+          `;
+        });
+      });
+    }
+
+    function updateClient(id) {
+      const balance = document.getElementById(`bal-${id}`).value;
+      const trader = document.getElementById(`trader-${id}`).value;
+      db.collection("clients").doc(id).update({
+        balance: parseFloat(balance),
+        trader: trader
+      }).then(() => {
+        alert("Client updated!");
+        loadClients();
+      });
+    }
+
+    loadClients();
+  </script>
+</body>
+</html>
