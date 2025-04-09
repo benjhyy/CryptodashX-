@@ -1,150 +1,133 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f9fbff;
-  color: #1b2a41;
-  position: relative;
+  font-family: 'Inter', sans-serif;
+  background: #f5f8fe;
+  color: #1a1a1a;
   overflow-x: hidden;
 }
 
-.bg-animation {
+#particles-js {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://images.unsplash.com/photo-1613201710931-265c5f08fafe?auto=format&fit=crop&w=1920&q=80') no-repeat center center / cover;
   z-index: -1;
-  opacity: 0.1;
-  animation: bgMove 40s linear infinite;
-}
-
-@keyframes bgMove {
-  0% { background-position: 0 0; }
-  100% { background-position: 1000px 0; }
-}
-
-a {
-  text-decoration: none;
-  color: #1b4edc;
-}
-
-.container {
-  width: 90%;
-  max-width: 1100px;
-  margin: 0 auto;
+  top: 0;
+  left: 0;
 }
 
 header {
-  background-color: white;
-  padding: 1.5rem 0;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.nav {
+  background: white;
+  padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.05);
 }
 
-.nav h1 {
-  font-size: 1.8rem;
+header h1 {
   color: #1b4edc;
+  margin: 0;
 }
 
-.nav-links {
-  display: flex;
-  gap: 1rem;
-}
-
-.nav a {
-  font-weight: 500;
-}
-
-.btn {
-  background-color: #1b4edc;
-  color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 6px;
+nav a {
+  text-decoration: none;
+  color: #1b4edc;
+  font-weight: 600;
 }
 
 .hero {
-  background-color: #eaf1ff;
-  padding: 4rem 0;
   text-align: center;
+  background: #eaf1ff;
+  padding: 4rem 2rem 3rem;
 }
 
 .hero h2 {
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   margin-bottom: 1rem;
-  animation: fadeUp 1s ease-in-out;
 }
 
-.cta-btn {
-  background-color: #1b4edc;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 6px;
-  display: inline-block;
-  margin-top: 1rem;
+.hero p {
+  font-size: 1.1rem;
+  color: #444;
+  max-width: 600px;
+  margin: auto;
 }
 
-.chart-placeholder {
-  padding: 3rem 0;
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 3rem 2rem;
 }
 
-.chart-box {
-  background-color: white;
-  border: 1px solid #ccd6f6;
-  padding: 2rem;
-  border-radius: 8px;
+.center {
   text-align: center;
-  color: #888;
+  color: #1b4edc;
 }
 
-.features {
-  background-color: #f0f4ff;
-  padding: 3rem 0;
-}
-
-.grid {
+.crypto-cards {
   display: flex;
-  gap: 2rem;
   flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
 }
 
-.feature {
-  flex: 1 1 30%;
+.crypto-card {
   background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease;
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  width: 220px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: 0.3s ease;
 }
 
-.feature:hover {
-  transform: translateY(-5px);
+.crypto-card:hover {
+  transform: scale(1.03);
+}
+
+.crypto-card h4 {
+  color: #1b4edc;
+  margin-bottom: 0.5rem;
 }
 
 footer {
   text-align: center;
-  padding: 2rem 0;
-  background-color: #eaf1ff;
+  padding: 2rem;
+  background: #f0f0f0;
+  font-size: 0.9rem;
 }
 
-/* Animations */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 1s ease-out forwards;
+/* Auth section */
+.auth input {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0.5rem auto;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.auth .btns {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.auth button {
+  margin: 0.3rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background: #1b4edc;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.auth button:hover {
+  background: #163eaf;
+}
+
+#auth-status {
+  text-align: center;
+  margin-top: 1rem;
+  color: #007700;
 }
