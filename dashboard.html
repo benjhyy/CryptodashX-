@@ -7,13 +7,18 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Client Dashboard</h1>
-    <p>Welcome, <span id="user-name">Loading...</span></p>
+
+  <header style="text-align:center;padding:2rem;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+      <img src="https://i.ibb.co/6rzvjM2/cryptodashx-logo.png" alt="CryptodashX Logo" width="50" height="50" />
+      <h1 style="margin:0;font-size:2rem;color:#333;">CryptodashX</h1>
+    </div>
+    <p style="color:#777;font-size:1rem;">Client Dashboard</p>
   </header>
 
   <section style="max-width:600px;margin:2rem auto;">
     <div style="background:white;padding:1.5rem;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);">
+      <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
       <p><strong>Email:</strong> <span id="user-email">...</span></p>
       <p><strong>Balance:</strong> $<span id="user-balance">...</span></p>
       <p><strong>Assigned Trader:</strong> <span id="user-trader">...</span></p>
@@ -55,13 +60,13 @@
         db.collection("clients").doc(email).get().then(doc => {
           if (doc.exists) {
             const data = doc.data();
-            document.getElementById("user-name").textContent = data.name || "User";
+            document.getElementById("user-name").textContent = data.name || "Client";
             document.getElementById("user-balance").textContent = data.balance || "0";
-            document.getElementById("user-trader").textContent = data.trader || "Unassigned";
+            document.getElementById("user-trader").textContent = data.trader || "Pending";
           } else {
             document.getElementById("user-name").textContent = "New User";
             document.getElementById("user-balance").textContent = "0";
-            document.getElementById("user-trader").textContent = "Pending Assignment";
+            document.getElementById("user-trader").textContent = "Unassigned";
           }
         });
       }
