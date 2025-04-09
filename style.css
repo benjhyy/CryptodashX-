@@ -25,8 +25,11 @@ header {
   box-shadow: 0 1px 5px rgba(0,0,0,0.05);
 }
 
-header img {
-  height: 40px;
+.logo {
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: #1b4edc;
+  letter-spacing: 1px;
 }
 
 nav a {
@@ -54,7 +57,7 @@ nav a {
   margin: auto;
 }
 
-/* CONTAINERS */
+/* CONTAINER */
 .container {
   max-width: 1200px;
   margin: auto;
@@ -66,7 +69,7 @@ nav a {
   color: #1b4edc;
 }
 
-/* AUTH */
+/* AUTH SECTION */
 .auth input {
   display: block;
   width: 100%;
@@ -106,25 +109,19 @@ nav a {
 .ticker-container {
   overflow: hidden;
   background: #1b4edc;
-  padding: 10px 0;
+  padding: 10px;
   color: white;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
   border-radius: 5px;
+  text-align: center;
 }
 
 .ticker {
   display: inline-block;
-  white-space: nowrap;
-  animation: scroll 20s linear infinite;
 }
 
-@keyframes scroll {
-  from { transform: translateX(100%); }
-  to { transform: translateX(-100%); }
-}
-
-/* TRADINGVIEW */
+/* TRADING CHART */
 .chart-box {
   margin-top: 1.5rem;
   border: 1px solid #ccc;
@@ -133,22 +130,24 @@ nav a {
 }
 
 /* TESTIMONIALS */
-.testimonials {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 2rem;
-  gap: 2rem;
+.testimonial-slider {
+  max-width: 700px;
+  text-align: center;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  font-style: italic;
 }
 
-.testimonial-card {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-  max-width: 300px;
-  text-align: center;
-  font-style: italic;
+.testimonial-slider p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial-slider strong {
+  color: #1b4edc;
 }
 
 /* FOOTER */
@@ -165,8 +164,11 @@ footer {
     font-size: 2rem;
   }
 
-  .testimonials {
-    flex-direction: column;
-    align-items: center;
+  .testimonial-slider {
+    padding: 1rem;
+  }
+
+  .ticker-container {
+    font-size: 0.9rem;
   }
 }
