@@ -3,6 +3,25 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f9fbff;
   color: #1b2a41;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.bg-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://images.unsplash.com/photo-1613201710931-265c5f08fafe?auto=format&fit=crop&w=1920&q=80') no-repeat center center / cover;
+  z-index: -1;
+  opacity: 0.1;
+  animation: bgMove 40s linear infinite;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 1000px 0; }
 }
 
 a {
@@ -20,6 +39,9 @@ header {
   background-color: white;
   padding: 1.5rem 0;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .nav {
@@ -33,12 +55,16 @@ header {
   color: #1b4edc;
 }
 
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
 .nav a {
-  margin-left: 1rem;
   font-weight: 500;
 }
 
-.nav .btn {
+.btn {
   background-color: #1b4edc;
   color: white;
   padding: 0.5rem 1.2rem;
@@ -54,6 +80,7 @@ header {
 .hero h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
+  animation: fadeUp 1s ease-in-out;
 }
 
 .cta-btn {
@@ -95,10 +122,29 @@ header {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
 }
 
 footer {
   text-align: center;
   padding: 2rem 0;
   background-color: #eaf1ff;
+}
+
+/* Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
