@@ -1,83 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel - CryptodashX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptodashX | Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
-
-  <header style="text-align:center;padding:2rem;">
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-      <img src="https://i.ibb.co/6rzvjM2/cryptodashx-logo.png" alt="CryptodashX Logo" width="50" height="50" />
-      <h1 style="margin:0;font-size:2rem;color:#333;">CryptodashX</h1>
-    </div>
-    <p style="color:#777;font-size:1rem;">Admin Dashboard — Manage Clients</p>
-  </header>
-
-  <main style="padding: 2rem; max-width: 900px; margin: auto;">
-    <div id="client-list">Loading clients...</div>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 CryptodashX. All rights reserved.</p>
-  </footer>
-
-  <!-- Firebase SDK v8 -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-  <script>
+  <header>
+    <h1 class="logo">Admin Panel - CryptodashX</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </nav>
+  </header>  <section class="container">
+    <h2>All Users</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Balance</th>
+          <th>Trader</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userTable">
+        <tr><td colspan="5">Loading...</td></tr>
+      </tbody>
+    </table>
+  </section>  <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyCci7LzkpUEt2-eRPJqOUmS7CengwEVpZY",
-      authDomain: "cryptodashx.firebaseapp.com",
-      projectId: "cryptodashx",
-      storageBucket: "cryptodashx.firebasestorage.app",
-      messagingSenderId: "106873532709",
-      appId: "1:106873532709:web:4a9e8ee575a7f5f7c92acc",
-      measurementId: "G-F56GBVEVPS"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.firestore();
 
-    function loadClients() {
-      const container = document.getElementById("client-list");
-      container.innerHTML = "<p>Loading...</p>";
+    auth.onAuthStateChanged(user => {
+      if (!user || user.email !== "admin@cryptodashx.com") {
+        alert("Access denied.");
+        window.location.href = "index.html";
+      } else {
+        loadUsers();
+      }
+    });
 
-      db.collection("clients").get().then(snapshot => {
-        container.innerHTML = "";
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const id = doc.id;
-          container.innerHTML += `
-            <div style="border:1px solid #ccc;padding:1rem;margin-bottom:1rem;border-radius:10px;background:#fff;">
-              <h3>${data.name || "Unnamed Client"}</h3>
-              <p><strong>Email:</strong> ${data.email}</p>
-              <p><strong>Balance:</strong> $<input id="bal-${id}" value="${data.balance || 0}" style="width:100px;" /></p>
-              <p><strong>Trader:</strong> <input id="trader-${id}" value="${data.trader || "Pending"}" style="width:200px;" /></p>
-              <button onclick="updateClient('${id}')" style="padding:6px 12px;background:#ff4fa1;color:white;border:none;border-radius:6px;">Update</button>
-            </div>
-          `;
-        });
+    async function loadUsers() {
+      const snapshot = await db.collection("users").get();
+      const tbody = document.getElementById("userTable");
+      tbody.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const user = doc.data();
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${user.name || "-"}</td>
+          <td>${user.email}</td>
+          <td>
+            <input type="number" value="${user.balance || 0}" id="bal-${doc.id}" style="width: 80px;"> $
+          </td>
+          <td>
+            <input type="text" value="${user.trader || "Unassigned"}" id="trader-${doc.id}" style="width: 120px;">
+          </td>
+          <td>
+            <button onclick="updateUser('${doc.id}')">Update</button>
+          </td>
+        `;
+        tbody.appendChild(row);
       });
     }
 
-    function updateClient(id) {
-      const balance = parseFloat(document.getElementById(`bal-${id}`).value);
-      const trader = document.getElementById(`trader-${id}`).value;
+    async function updateUser(uid) {
+      const balance = parseFloat(document.getElementById(`bal-${uid}`).value);
+      const trader = document.getElementById(`trader-${uid}`).value;
 
-      db.collection("clients").doc(id).update({
+      await db.collection("users").doc(uid).update({
         balance: balance,
         trader: trader
-      }).then(() => {
-        alert("Client updated successfully!");
-        loadClients();
       });
+
+      alert("User updated successfully.");
     }
 
-    loadClients();
-  </script>
-</body>
+    document.getElementById("logoutBtn").onclick = () => auth.signOut();
+  </script></body>
 </html>
