@@ -7,12 +7,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Admin Dashboard</h1>
-    <p>Manage clients and update accounts</p>
+
+  <header style="text-align:center;padding:2rem;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+      <img src="https://i.ibb.co/6rzvjM2/cryptodashx-logo.png" alt="CryptodashX Logo" width="50" height="50" />
+      <h1 style="margin:0;font-size:2rem;color:#333;">CryptodashX</h1>
+    </div>
+    <p style="color:#777;font-size:1rem;">Admin Dashboard — Manage Clients</p>
   </header>
 
-  <main style="padding: 2rem; max-width: 1000px; margin: auto;">
+  <main style="padding: 2rem; max-width: 900px; margin: auto;">
     <div id="client-list">Loading clients...</div>
   </main>
 
@@ -20,10 +24,10 @@
     <p>&copy; 2025 CryptodashX. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <!-- Firebase SDK v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
   <script>
     const firebaseConfig = {
@@ -36,22 +40,24 @@
       measurementId: "G-F56GBVEVPS"
     };
     firebase.initializeApp(firebaseConfig);
-
     const db = firebase.firestore();
 
     function loadClients() {
       const container = document.getElementById("client-list");
+      container.innerHTML = "<p>Loading...</p>";
+
       db.collection("clients").get().then(snapshot => {
         container.innerHTML = "";
         snapshot.forEach(doc => {
           const data = doc.data();
+          const id = doc.id;
           container.innerHTML += `
-            <div style="border:1px solid #ccc;padding:1rem;margin-bottom:1rem;">
-              <h3>${data.name || doc.id}</h3>
+            <div style="border:1px solid #ccc;padding:1rem;margin-bottom:1rem;border-radius:10px;background:#fff;">
+              <h3>${data.name || "Unnamed Client"}</h3>
               <p><strong>Email:</strong> ${data.email}</p>
-              <p><strong>Balance:</strong> $<input id="bal-${doc.id}" value="${data.balance || 0}" /></p>
-              <p><strong>Trader:</strong> <input id="trader-${doc.id}" value="${data.trader || 'Unassigned'}" /></p>
-              <button onclick="updateClient('${doc.id}')">Update</button>
+              <p><strong>Balance:</strong> $<input id="bal-${id}" value="${data.balance || 0}" style="width:100px;" /></p>
+              <p><strong>Trader:</strong> <input id="trader-${id}" value="${data.trader || "Pending"}" style="width:200px;" /></p>
+              <button onclick="updateClient('${id}')" style="padding:6px 12px;background:#ff4fa1;color:white;border:none;border-radius:6px;">Update</button>
             </div>
           `;
         });
@@ -59,13 +65,14 @@
     }
 
     function updateClient(id) {
-      const balance = document.getElementById(`bal-${id}`).value;
+      const balance = parseFloat(document.getElementById(`bal-${id}`).value);
       const trader = document.getElementById(`trader-${id}`).value;
+
       db.collection("clients").doc(id).update({
-        balance: parseFloat(balance),
+        balance: balance,
         trader: trader
       }).then(() => {
-        alert("Client updated!");
+        alert("Client updated successfully!");
         loadClients();
       });
     }
