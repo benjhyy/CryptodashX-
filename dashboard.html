@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptodashX - Client Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .dashboard-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .dashboard-container h2 {
+      color: #ff4fa1;
+    }
+
+    .dashboard-container .info {
+      margin: 1rem 0;
+      text-align: left;
+    }
+
+    .logout-btn {
+      margin-top: 2rem;
+      background: #ff4fa1;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Client Dashboard</h1>
+    <p>Welcome to your trading account</p>
+  </header>
+
+  <div class="dashboard-container">
+    <h2>Account Overview</h2>
+    <div class="info">
+      <p><strong>Name:</strong> <span id="client-name">Loading...</span></p>
+      <p><strong>Investment Status:</strong> Active</p>
+      <p><strong>Assigned Trader:</strong> Tracy Fox</p>
+      <p><strong>BTC Wallet for Funding:</strong> bc1qexamplexyz123abc</p>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 CryptodashX. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function logout() {
+      alert("Logging out...");
+      window.location.href = "index.html";
+    }
+    // Optionally you can pull user info from Firebase here
+    document.getElementById("client-name").textContent = "Demo Client";
+  </script>
+</body>
+</html>
