@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CryptodashX | Admin Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -33,7 +33,7 @@
         </tr>
       </thead>
       <tbody id="userTable">
-        <tr><td colspan="5">Loading...</td></tr>
+        <tr><td colspan="5">Loading users...</td></tr>
       </tbody>
     </table>
   </section>
@@ -47,6 +47,7 @@
       messagingSenderId: "YOUR_SENDER_ID",
       appId: "YOUR_APP_ID"
     };
+
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
@@ -110,5 +111,6 @@
 
     document.getElementById("logoutBtn").onclick = () => auth.signOut();
   </script>
+
 </body>
 </html>
