@@ -3,58 +3,210 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CryptodashX - Invest Smart</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>CryptodashX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f4f7fa;
+      color: #111;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      top: 0;
+      left: 0;
+    }
+
+    header {
+      background: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    header h1 {
+      color: #1b4edc;
+    }
+
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: #1b4edc;
+      font-weight: 600;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      background: #eaf0fc;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #0b0f19;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: auto;
+      color: #555;
+    }
+
+    .hero button {
+      margin-top: 2rem;
+      background: #1b4edc;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .hero button:hover {
+      background: #153bb2;
+    }
+
+    .container {
+      padding: 3rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .crypto-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .crypto-card {
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      width: 220px;
+      transition: transform 0.3s ease;
+    }
+
+    .crypto-card:hover {
+      transform: scale(1.05);
+    }
+
+    .crypto-card h4 {
+      margin-bottom: 0.5rem;
+      color: #1b4edc;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      background: #f2f2f2;
+    }
+
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 2rem;
+      }
+
+      .crypto-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="bg-animation"></div>
+  <!-- Background animation -->
+  <div id="particles-js"></div>
 
+  <!-- Header -->
   <header>
-    <div class="container nav">
-      <h1>CryptodashX</h1>
-      <nav class="nav-links">
-        <a href="login.html">Login</a>
-        <a href="signup.html" class="btn">Get Started</a>
-      </nav>
-    </div>
+    <h1>CryptodashX</h1>
+    <nav>
+      <a href="#">Login</a>
+      <a href="#">Get Started</a>
+    </nav>
   </header>
 
-  <section class="hero fade-in">
-    <div class="container">
-      <h2>Invest in the future of finance</h2>
-      <p>We trade binary options and crypto on your behalf, earning profits while you relax.</p>
-      <a href="signup.html" class="cta-btn">Create Account</a>
-    </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Invest in the Future of Finance</h2>
+    <p>We trade binary options and crypto on your behalf, earning profits while you relax.</p>
+    <button>Create Account</button>
   </section>
 
-  <section class="chart-placeholder fade-in">
-    <div class="container">
-      <h3>Live Market Overview</h3>
-      <div class="chart-box">[ TradingView widget or chart goes here ]</div>
-    </div>
+  <!-- Crypto Stats Section -->
+  <section class="container">
+    <h3 style="text-align:center; color:#1b4edc;">Top Crypto Markets</h3>
+    <div id="crypto-data" class="crypto-cards"></div>
   </section>
 
-  <section class="features fade-in">
-    <div class="container grid">
-      <div class="feature">
-        <h4>Expert Traders</h4>
-        <p>Skilled professionals manage your investments.</p>
-      </div>
-      <div class="feature">
-        <h4>Secure Wallets</h4>
-        <p>Fund via Bitcoin with top-level encryption.</p>
-      </div>
-      <div class="feature">
-        <h4>Instant Withdrawals</h4>
-        <p>Get paid in crypto anytime you want.</p>
-      </div>
-    </div>
-  </section>
-
+  <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>&copy; 2025 CryptodashX. All rights reserved.</p>
-    </div>
+    &copy; 2025 CryptodashX. All rights reserved.
   </footer>
+
+  <!-- Particle config -->
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 60 },
+        color: { value: "#1b4edc" },
+        shape: { type: "circle" },
+        opacity: { value: 0.3 },
+        size: { value: 3 },
+        move: { speed: 1 }
+      }
+    });
+  </script>
+
+  <!-- Crypto Stats Script -->
+  <script>
+    async function getCryptoData() {
+      try {
+        const res = await fetch(
+          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,binancecoin,solana,cardano'
+        );
+        const data = await res.json();
+        const container = document.getElementById('crypto-data');
+
+        data.forEach(coin => {
+          const card = document.createElement('div');
+          card.className = 'crypto-card';
+          card.innerHTML = `
+            <h4>${coin.name} (${coin.symbol.toUpperCase()})</h4>
+            <p><strong>Price:</strong> $${coin.current_price.toLocaleString()}</p>
+            <p><strong>24h Change:</strong> ${coin.price_change_percentage_24h.toFixed(2)}%</p>
+            <p><strong>Market Cap:</strong> $${(coin.market_cap / 1e9).toFixed(2)}B</p>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error('Failed to load crypto data:', err);
+      }
+    }
+
+    getCryptoData();
+  </script>
 </body>
 </html>
