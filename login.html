@@ -7,9 +7,13 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Login to CryptodashX</h1>
-    <p>Access your trading dashboard</p>
+
+  <header style="text-align:center;padding:2rem;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="logo" width="50" height="50" />
+      <h1 style="margin:0;font-size:2rem;color:#333;">CryptodashX</h1>
+    </div>
+    <p style="color:#777;font-size:1rem;">Track Profit | Loss | Investment</p>
   </header>
 
   <div style="max-width:400px;margin:2rem auto;text-align:left;">
@@ -74,7 +78,6 @@
         .then(userCredential => {
           const user = userCredential.user;
 
-          // Save client data in Firestore
           db.collection("clients").doc(email).set({
             email: email,
             name: "New Client",
