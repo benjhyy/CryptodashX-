@@ -9,7 +9,7 @@
 <body>
   <header>
     <h1>Client Dashboard</h1>
-    <p>Welcome back, <span id="user-name">Loading...</span></p>
+    <p>Welcome, <span id="user-name">Loading...</span></p>
   </header>
 
   <section style="max-width:600px;margin:2rem auto;">
@@ -25,13 +25,14 @@
     <p>&copy; 2025 CryptodashX. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <!-- Firebase SDK v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
   <script>
-    const firebaseConfig = {
+    // Firebase config
+    var firebaseConfig = {
       apiKey: "AIzaSyCci7LzkpUEt2-eRPJqOUmS7CengwEVpZY",
       authDomain: "cryptodashx.firebaseapp.com",
       projectId: "cryptodashx",
@@ -41,22 +42,28 @@
       measurementId: "G-F56GBVEVPS"
     };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    var auth = firebase.auth();
+    var db = firebase.firestore();
 
     auth.onAuthStateChanged(user => {
-      if (user) {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
         const email = user.email;
         document.getElementById("user-email").textContent = email;
 
         db.collection("clients").doc(email).get().then(doc => {
-          const data = doc.data();
-          document.getElementById("user-name").textContent = data.name || "Client";
-          document.getElementById("user-balance").textContent = data.balance || "0";
-          document.getElementById("user-trader").textContent = data.trader || "Unassigned";
+          if (doc.exists) {
+            const data = doc.data();
+            document.getElementById("user-name").textContent = data.name || "User";
+            document.getElementById("user-balance").textContent = data.balance || "0";
+            document.getElementById("user-trader").textContent = data.trader || "Unassigned";
+          } else {
+            document.getElementById("user-name").textContent = "New User";
+            document.getElementById("user-balance").textContent = "0";
+            document.getElementById("user-trader").textContent = "Pending Assignment";
+          }
         });
-      } else {
-        window.location.href = "login.html";
       }
     });
 
