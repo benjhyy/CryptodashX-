@@ -17,6 +17,7 @@
     <h1 class="logo">CryptodashX</h1>
     <nav>
       <a href="#" onclick="logout()">Logout</a>
+      <button id="theme-toggle" class="theme-toggle">Switch to Light Mode</button>
     </nav>
   </header>
 
@@ -109,6 +110,17 @@
     function logout() {
       auth.signOut().then(() => document.getElementById("auth-status").innerText = "Logged out.");
     }
+  </script>
+
+  <!-- Theme Toggle -->
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      toggleBtn.textContent = document.body.classList.contains('light-mode')
+        ? 'Switch to Dark Mode'
+        : 'Switch to Light Mode';
+    });
   </script>
 
   <!-- Particle Background -->
