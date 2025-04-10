@@ -1,4 +1,4 @@
-hdocument.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const cryptoList = document.getElementById("crypto-list");
 
   // Show loading text
